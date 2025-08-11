@@ -17,6 +17,6 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         ports:
         - containerPort: {{ .Values.service.targetPort }}
-        envFrom:
-        - configMapRef:
-            name: my-spring-app-config # Injects all key-value pairs from our ConfigMap
+        # envFrom:
+        # - configMapRef:
+        #     name: my-spring-app-config # Injects all key-value pairs from our ConfigMap

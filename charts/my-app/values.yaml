@@ -1,3 +1,4 @@
+# values.yaml
 # Declare variables to be passed into your templates.
 
 # This will set the replicaset count
@@ -77,8 +78,8 @@ service:
   #      - chart-example.local
 
 # The configuration for the application
-config:
-  profile: gke
+# config:
+#   profile: gke
 
 # resources: {}
 #   # We usually recommend not to specify default resources and to leave this as a conscious
