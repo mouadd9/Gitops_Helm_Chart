@@ -25,8 +25,8 @@ spec:
     # Source 2: Values from GitOps repo
     - repoURL: https://gitlab.com/mouadd9/gitops-infra-repo.git # Your GitOps repository URL
       targetRevision: HEAD # Which branch/tag to track (HEAD = main branch)
+      path: applications
       ref: values
-      path: . # Folder containing your Helm chart, argo cd will use helm commands here 
       helm: # HELM CONFIGURATION: How to use the Helm chart
         valueFiles: # Values files to use (order matters - later files override earlier ones)
           - $values/environments/values-staging.yaml # Staging overrides (relative path from charts/my-app/)
