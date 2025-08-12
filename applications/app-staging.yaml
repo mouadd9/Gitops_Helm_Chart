@@ -1,17 +1,16 @@
 # This YAML file defines an ArgoCD Application resource that instructs the ArgoCD controller to perform multi-source synchronization operations
-apiVersion: argoproj.io/v1alpha1    # This is an ArgoCD custom resource
-kind: Application                   # Type: Application (ArgoCD's main resource type)
+apiVersion: argoproj.io/v1alpha1 # This is an ArgoCD custom resource
+kind: Application # Type: Application (ArgoCD's main resource type)
 metadata:
-  name: my-app-staging             # Name of this ArgoCD application (shows in ArgoCD UI)
-  namespace: argocd                # ArgoCD itself lives in the 'argocd' namespace
+  name: my-app-staging # Name of this ArgoCD application (shows in ArgoCD UI)
+  namespace: argocd # ArgoCD itself lives in the 'argocd' namespace
   finalizers:
-    - resources-finalizer.argocd.argoproj.io  # Ensures proper cleanup when app is deleted
+    - resources-finalizer.argocd.argoproj.io # Ensures proper cleanup when app is deleted
 spec:
   # ============================================================================
   # PROJECT: Which ArgoCD project this app belongs to (for RBAC/permissions)
   # ============================================================================
-  project: default                 # 'default' project (basic setup)
-  
+  project: default # 'default' project (basic setup)
   # ============================================================================
   # SOURCE: Where ArgoCD should get the application configuration FROM
   # ============================================================================
@@ -19,27 +18,24 @@ spec:
     # Source 1: Helm chart from your app's container registry
     - chart: helm-chart
       repoURL: oci://registry.gitlab.com/mouadd9/cicd-project
-      targetRevision: "REPLACE_ME"  # Pipeline updates this
+      targetRevision: "0.2.0+0158c226" # Pipeline updates this
       helm:
         valueFiles:
           - $values/environments/dev-values.yaml
-    
     # Source 2: Values from GitOps repo
-    - repoURL: https://gitlab.com/mouadd9/gitops-infra-repo.git  # Your GitOps repository URL
-      targetRevision: HEAD          # Which branch/tag to track (HEAD = main branch)
+    - repoURL: https://gitlab.com/mouadd9/gitops-infra-repo.git # Your GitOps repository URL
+      targetRevision: HEAD # Which branch/tag to track (HEAD = main branch)
       ref: values
-      path: .          # Folder containing your Helm chart, argo cd will use helm commands here 
+      path: . # Folder containing your Helm chart, argo cd will use helm commands here 
       helm: # HELM CONFIGURATION: How to use the Helm chart
         valueFiles: # Values files to use (order matters - later files override earlier ones)
-          - $values/environments/values-staging.yaml  # Staging overrides (relative path from charts/my-app/)
-
+          - $values/environments/values-staging.yaml # Staging overrides (relative path from charts/my-app/)
   # ============================================================================
   # DESTINATION: Where ArgoCD should deploy TO (which cluster and namespace)
   # ============================================================================
   destination:
-    server: https://kubernetes.default.svc  # Target Kubernetes cluster, This means "same cluster where ArgoCD is running"
-    namespace: default              # Kubernetes namespace to deploy into
-
+    server: https://kubernetes.default.svc # Target Kubernetes cluster, This means "same cluster where ArgoCD is running"
+    namespace: default # Kubernetes namespace to deploy into
   # ============================================================================
   # SYNC POLICY: How ArgoCD should keep things synchronized
   # ============================================================================
@@ -50,32 +46,31 @@ spec:
     #                   # (cleanup orphaned resources)
     #   selfHeal: true   # If someone manually changes the cluster, revert back to Git
     #                   # (prevents configuration drift)
-    
+
     # SYNC OPTIONS: Additional sync behaviors
     syncOptions:
-      - CreateNamespace=true    # Create the target namespace if it doesn't exist
+      - CreateNamespace=true # Create the target namespace if it doesn't exist
       # - PruneLast=true         # Delete resources last (safer deletion order)
+# # ============================================================================
+# # IGNORE DIFFERENCES (Optional): Tell ArgoCD to ignore certain field changes
+# # ============================================================================
+# ignoreDifferences:
+#   - group: apps
+#     kind: Deployment
+#     jsonPointers:
+#       - /spec/replicas        # Ignore replica count changes (useful with HPA)
+#   # You can ignore other fields that might change externally:
+#   # - group: ""
+#   #   kind: Service
+#   #   jsonPointers:
+#   #     - /spec/clusterIP     # Ignore cluster IP changes
 
-  # # ============================================================================
-  # # IGNORE DIFFERENCES (Optional): Tell ArgoCD to ignore certain field changes
-  # # ============================================================================
-  # ignoreDifferences:
-  #   - group: apps
-  #     kind: Deployment
-  #     jsonPointers:
-  #       - /spec/replicas        # Ignore replica count changes (useful with HPA)
-  #   # You can ignore other fields that might change externally:
-  #   # - group: ""
-  #   #   kind: Service
-  #   #   jsonPointers:
-  #   #     - /spec/clusterIP     # Ignore cluster IP changes
-
-  # # ============================================================================
-  # # RETRY POLICY (Optional): How to handle failed syncs
-  # # ============================================================================
-  # retry:
-  #   limit: 5                   # Maximum number of retry attempts
-  #   backoff:
-  #     duration: "30s"          # Initial wait time between retries
-  #     factor: 2                # Multiply wait time by this factor each retry
-  #     maxDuration: "3m"        # Maximum wait time between retries
+# # ============================================================================
+# # RETRY POLICY (Optional): How to handle failed syncs
+# # ============================================================================
+# retry:
+#   limit: 5                   # Maximum number of retry attempts
+#   backoff:
+#     duration: "30s"          # Initial wait time between retries
+#     factor: 2                # Multiply wait time by this factor each retry
+#     maxDuration: "3m"        # Maximum wait time between retries
