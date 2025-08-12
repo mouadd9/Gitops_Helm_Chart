@@ -11,13 +11,13 @@ spec:
     - chart: my-spring-app-chart 
       repoURL: registry.gitlab.com/mouadd9/cicd-project
       targetRevision: "0.2.0+0158c226" # Pipeline updates this
-    - repoURL: https://gitlab.com/mouadd9/gitops-infra-repo.git # Your GitOps repository URL
-      targetRevision: HEAD # Which branch/tag to track (HEAD = main branch)
-      path: applications
-      ref: values
       helm: # HELM CONFIGURATION: How to use the Helm chart
         valueFiles: # Values files to use (order matters - later files override earlier ones)
-          - $values/environments/values-staging.yaml # Staging overrides (relative path from charts/my-app/)
+          - $values/environments/values-staging.yaml 
+    - repoURL: https://gitlab.com/mouadd9/gitops-infra-repo.git # Your GitOps repository URL
+      targetRevision: HEAD # Which branch/tag to track (HEAD = main branch)
+      ref: values
+
   destination:
     server: https://kubernetes.default.svc # Target Kubernetes cluster, This means "same cluster where ArgoCD is running"
     namespace: default # Kubernetes namespace to deploy into
