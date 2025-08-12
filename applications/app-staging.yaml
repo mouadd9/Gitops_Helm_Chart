@@ -10,7 +10,7 @@ spec:
   sources:
     - chart: my-spring-app-chart
       repoURL: registry.gitlab.com/mouadd9/cicd-project
-      targetRevision: "0.4.0+5370cfe4" # Pipeline updates this
+      targetRevision: "0.4.0+b860376e" # Pipeline updates this
       helm: # HELM CONFIGURATION: How to use the Helm chart
         valueFiles: # Values files to use (order matters - later files override earlier ones)
           - $values/environments/values-staging.yaml
