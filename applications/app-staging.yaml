@@ -8,8 +8,8 @@ metadata:
 spec:
   project: default # 'default' project (basic setup)
   sources:
-    - chart: my-spring-app-chart
-      repoURL: oci://registry.gitlab.com/mouadd9/cicd-project
+    - chart: my-spring-app-chart 
+      repoURL: registry.gitlab.com/mouadd9/cicd-project
       targetRevision: "0.2.0+0158c226" # Pipeline updates this
     - repoURL: https://gitlab.com/mouadd9/gitops-infra-repo.git # Your GitOps repository URL
       targetRevision: HEAD # Which branch/tag to track (HEAD = main branch)
