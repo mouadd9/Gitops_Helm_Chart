@@ -1,4 +1,4 @@
 image:
   repository: registry.gitlab.com/mouadd9/cicd-project
-  tag: "0158c226" # Pipeline will update this
+  tag: "9b42d532" # Pipeline will update this
   pullPolicy: Always
