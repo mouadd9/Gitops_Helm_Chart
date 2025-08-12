@@ -9,7 +9,7 @@ spec:
   project: default # 'default' project (basic setup)
   sources:
     - chart: my-spring-app-chart
-      repoURL: oci://registry.gitlab.com/mouadd9/cicd-project
+      repoURL: registry.gitlab.com/mouadd9/cicd-project
       targetRevision: "0.2.0+0158c226" # Pipeline updates this
       helm:
         valueFiles:
